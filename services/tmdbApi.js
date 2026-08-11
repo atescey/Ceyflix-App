@@ -34,3 +34,32 @@ export function searchMovies(query, page = 1) {
 export function getMovieDetails(id) {
     return fetchFromTMDB(`/movie/${id}`, { append_to_response: "videos,credits" });
 }
+export function getTVDetails(id) {
+    return fetchFromTMDB(`/tv/${id}`, { append_to_response: "videos,credits" });
+}
+export function getNowPlayingMovies(page = 1) {
+    return fetchFromTMDB("/movie/now_playing", { page });
+}
+
+export function getMoviesByGenre(genreId, page = 1) {
+    return fetchFromTMDB("/discover/movie", { with_genres: genreId, page, sort_by: "popularity.desc" });
+}
+export function getPopularMovies(page = 1) {
+    return fetchFromTMDB("/movie/popular", { page });
+}
+
+export function getTrendingTVShows(page = 1) {
+    return fetchFromTMDB("/trending/tv/day", { page });
+}
+
+export function getOnTheAirTVShows(page = 1) {
+    return fetchFromTMDB("/tv/on_the_air", { page });
+}
+
+export function getTVGenres() {
+    return fetchFromTMDB("/genre/tv/list");
+}
+
+export function getTVByGenre(genreId, page = 1) {
+    return fetchFromTMDB("/discover/tv", { with_genres: genreId, page, sort_by: "popularity.desc" });
+}
