@@ -33,11 +33,11 @@ export default function RootLayout() {
       headerTitleStyle: { fontFamily: fonts.headline },
       contentStyle: { backgroundColor: colors.background },
     }}>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="signup" options={{ headerShown: false }} />
+      <Stack.Screen name="profiles" options={{ headerShown: false }} />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen
-        name="movie/[id]"
-        options={{ headerShown: false, title: "", headerBackTitle: "" }}
-      />
+      <Stack.Screen name="movie/[id]" options={{ headerShown: false }} />
       <Stack.Screen
         name="tv/[id]"
         options={{ headerShown: false, title: "", headerBackTitle: "" }}
