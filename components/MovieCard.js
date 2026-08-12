@@ -8,6 +8,7 @@ const BACKDROP_BASE_URL = "https://image.tmdb.org/t/p/w500";
 export default function MovieCard({ item, variant = "poster", width }) {
     const router = useRouter();
     const title = item.title || item.name;
+    const isTV = item.media_type ? item.media_type === "tv" : !item.title && !!item.name;
     const isBackdrop = variant === "backdrop";
     const imagePath = isBackdrop ? item.backdrop_path : item.poster_path;
     const imageUrl = imagePath
@@ -20,7 +21,7 @@ export default function MovieCard({ item, variant = "poster", width }) {
     return (
         <TouchableOpacity
             style={[styles.card, { width: cardWidth }]}
-            onPress={() => router.push(`/movie/${item.id}`)}
+            onPress={() => router.push(isTV ? `/tv/${item.id}` : `/movie/${item.id}`)}
             activeOpacity={0.8}
         >
             {imageUrl ? (

@@ -34,7 +34,14 @@ export default function RootLayout() {
       contentStyle: { backgroundColor: colors.background },
     }}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="movie/[id]" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="movie/[id]"
+        options={{ headerShown: false, title: "", headerBackTitle: "" }}
+      />
+      <Stack.Screen
+        name="tv/[id]"
+        options={{ headerShown: false, title: "", headerBackTitle: "" }}
+      />
     </Stack>
   );
 }

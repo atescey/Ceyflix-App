@@ -1,6 +1,7 @@
 import { View, Text, ImageBackground, TouchableOpacity, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 import { colors, fonts, radius } from "../constants/theme";
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w780";
@@ -10,8 +11,8 @@ export default function HeroBanner({ movie, genreMap }) {
     if (!movie) return null;
 
     const title = movie.title || movie.name;
+    const isTV = movie.media_type ? movie.media_type === "tv" : !movie.title && !!movie.name;
     const year = (movie.release_date || movie.first_air_date || "").slice(0, 4);
-    const rating = movie.vote_average ? Math.round(movie.vote_average * 10) : null;
     const genreNames = (movie.genre_ids || [])
         .slice(0, 3)
         .map((id) => genreMap[id])
@@ -32,7 +33,6 @@ export default function HeroBanner({ movie, genreMap }) {
                     {genreNames ? <Text style={styles.genres}>{genreNames}</Text> : null}
                     <Text style={styles.title}>{title}</Text>
                     <View style={styles.metaRow}>
-                        {rating ? <Text style={styles.meta}>{rating}% Uyum</Text> : null}
                         {year ? <Text style={styles.meta}>{year}</Text> : null}
                     </View>
                     <Text style={styles.overview} numberOfLines={3}>
@@ -41,9 +41,10 @@ export default function HeroBanner({ movie, genreMap }) {
                     <View style={styles.buttonRow}>
                         <TouchableOpacity
                             style={styles.playButton}
-                            onPress={() => router.push(`/movie/${movie.id}`)}
+                            onPress={() => router.push(isTV ? `/tv/${movie.id}` : `/movie/${movie.id}`)}
                         >
-                            <Text style={styles.playButtonText}>▶ Detaylar</Text>
+                            <Ionicons name="play" size={16} color={colors.onPrimary} />
+                            <Text style={styles.playButtonText}>Detaylar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.listButton}>
                             <Text style={styles.listButtonText}>+ Listem</Text>
@@ -85,6 +86,9 @@ const styles = StyleSheet.create({
     },
     buttonRow: { flexDirection: "row", gap: 12 },
     playButton: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 6,
         backgroundColor: colors.primary,
         paddingVertical: 12,
         paddingHorizontal: 24,
