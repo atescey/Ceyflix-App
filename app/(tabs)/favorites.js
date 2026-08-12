@@ -6,8 +6,8 @@ import { colors, fonts } from "../../constants/theme";
 
 const { width: screenWidth } = Dimensions.get("window");
 const PADDING = 16;
-const GAP = 8;
-const CARD_WIDTH = Math.floor((screenWidth - PADDING * 2 - GAP * 3) / 4);
+const GAP = 10;
+const CARD_WIDTH = Math.floor((screenWidth - PADDING * 2 - GAP * 2) / 3);
 
 export default function FavoritesScreen() {
   const { items, loading } = useMovieList("favorites");

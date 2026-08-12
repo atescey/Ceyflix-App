@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Animated, StyleSheet } from "react-native";
+import { Animated, StyleSheet, View } from "react-native";
 import { colors, radius } from "../constants/theme";
 
 export function SkeletonBox({ width, height, style }) {
@@ -26,16 +26,20 @@ export function SkeletonBox({ width, height, style }) {
     );
 }
 
-export function SkeletonMovieCard({ width = 120, variant = "poster" }) {
+export function SkeletonMovieCard({ width = 120, variant = "poster", style }) {
     const isBackdrop = variant === "backdrop";
-    const height = isBackdrop ? width * 0.5625 : width * 1.5;
+    const posterHeight = isBackdrop ? width * 0.5625 : width * 1.5;
 
     return (
-        <SkeletonBox
-            width={width}
-            height={height}
-            style={{ marginRight: 12, marginBottom: isBackdrop ? 0 : 8 }}
-        />
+        <View style={[{ width, marginRight: 12, marginBottom: isBackdrop ? 0 : 12 }, style]}>
+            <SkeletonBox width={width} height={posterHeight} />
+            {!isBackdrop && (
+                <View style={{ marginTop: 8 }}>
+                    <SkeletonBox width={width * 0.85} height={12} style={{ marginBottom: 4, borderRadius: radius.sm }} />
+                    <SkeletonBox width={width * 0.5} height={12} style={{ borderRadius: radius.sm }} />
+                </View>
+            )}
+        </View>
     );
 }
 

@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, ImageBackground } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
 import { useRouter, Link } from "expo-router";
@@ -39,62 +39,81 @@ export default function SignUpScreen() {
     };
 
     return (
-        <SafeAreaView style={styles.safe}>
-            <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={styles.flex}>
-                <Text style={styles.logo}>CEYFLİX</Text>
+        <ImageBackground
+            source={require("../assets/images/auth-background.png")}
+            style={styles.background}
+            imageStyle={{ opacity: 0.6 }}
+        >
+            <View style={styles.overlay} />
+            <SafeAreaView style={styles.safe}>
+                <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={styles.flex}>
+                    <Text style={styles.logo}>CEYFLİX</Text>
 
-                <View style={styles.form}>
-                    <Text style={styles.title}>Hesap Oluştur</Text>
+                    <View style={styles.form}>
+                        <Text style={styles.title}>Hesap Oluştur</Text>
 
-                    <TextInput
-                        style={styles.input}
-                        placeholder="E-posta"
-                        placeholderTextColor={colors.outline}
-                        value={email}
-                        onChangeText={setEmail}
-                        autoCapitalize="none"
-                        keyboardType="email-address"
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Şifre"
-                        placeholderTextColor={colors.outline}
-                        value={password}
-                        onChangeText={setPassword}
-                        secureTextEntry
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Şifre (tekrar)"
-                        placeholderTextColor={colors.outline}
-                        value={confirmPassword}
-                        onChangeText={setConfirmPassword}
-                        secureTextEntry
-                    />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="E-posta"
+                            placeholderTextColor={colors.outline}
+                            value={email}
+                            onChangeText={setEmail}
+                            autoCapitalize="none"
+                            keyboardType="email-address"
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Şifre"
+                            placeholderTextColor={colors.outline}
+                            value={password}
+                            onChangeText={setPassword}
+                            secureTextEntry
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Şifre (tekrar)"
+                            placeholderTextColor={colors.outline}
+                            value={confirmPassword}
+                            onChangeText={setConfirmPassword}
+                            secureTextEntry
+                        />
 
-                    {error ? <Text style={styles.errorText}>{error}</Text> : null}
+                        {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
-                    <TouchableOpacity style={styles.signInButton} onPress={handleSignUp} disabled={submitting}>
-                        <Text style={styles.signInButtonText}>{submitting ? "Oluşturuluyor..." : "Kayıt Ol"}</Text>
-                    </TouchableOpacity>
-
-                    <Link href="/" asChild>
-                        <TouchableOpacity>
-                            <Text style={styles.skipText}>
-                                Zaten hesabın var mı? <Text style={styles.link}>Giriş Yap</Text>
-                            </Text>
+                        <TouchableOpacity style={styles.signInButton} onPress={handleSignUp} disabled={submitting}>
+                            <Text style={styles.signInButtonText}>{submitting ? "Oluşturuluyor..." : "Kayıt Ol"}</Text>
                         </TouchableOpacity>
-                    </Link>
-                </View>
-            </KeyboardAvoidingView>
-        </SafeAreaView>
+
+                        <Link href="/" asChild>
+                            <TouchableOpacity>
+                                <Text style={styles.skipText}>
+                                    Zaten hesabın var mı? <Text style={styles.link}>Giriş Yap</Text>
+                                </Text>
+                            </TouchableOpacity>
+                        </Link>
+                    </View>
+                </KeyboardAvoidingView>
+            </SafeAreaView>
+        </ImageBackground>
     );
 }
 
 const styles = StyleSheet.create({
-    safe: { flex: 1, backgroundColor: colors.background },
+    background: { flex: 1, backgroundColor: colors.background },
+    overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(31,20,24,0.4)" },
+    safe: { flex: 1 },
     flex: { flex: 1, justifyContent: "center", paddingHorizontal: 24 },
-    logo: { fontSize: 34, color: colors.primary, fontFamily: fonts.headlineBold, textAlign: "center", marginBottom: 48 },
+    logo: {
+        fontSize: 42,
+        color: colors.primary,
+        fontFamily: fonts.headlineBold,
+        textAlign: "center",
+        marginBottom: 40,
+        letterSpacing: 4,
+        textShadowColor: "rgba(255, 77, 141, 0.85)",
+        textShadowOffset: { width: 0, height: 2 },
+        textShadowRadius: 14,
+    },
     form: { backgroundColor: colors.surfaceContainer, borderRadius: radius.xl, padding: 24 },
     title: { fontSize: 22, color: colors.onSurface, fontFamily: fonts.headline, marginBottom: 20 },
     input: {

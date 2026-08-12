@@ -1,6 +1,5 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, ImageBackground } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { LinearGradient } from "expo-linear-gradient";
 import { useState } from "react";
 import { useRouter, Link } from "expo-router";
 import { loginUser } from "../hooks/useAuth";
@@ -31,8 +30,12 @@ export default function LoginScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <LinearGradient colors={["rgba(255,77,141,0.25)", "transparent"]} style={styles.glow} />
+    <ImageBackground
+      source={require("../assets/images/auth-background.png")}
+      style={styles.background}
+      imageStyle={{ opacity: 0.6 }}
+    >
+      <View style={styles.overlay} />
       <SafeAreaView style={styles.safe}>
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={styles.flex}>
           <Text style={styles.logo}>CEYFLİX</Text>
@@ -74,16 +77,26 @@ export default function LoginScreen() {
           </View>
         </KeyboardAvoidingView>
       </SafeAreaView>
-    </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
-  glow: { position: "absolute", top: 0, left: 0, right: 0, height: 320 },
+  background: { flex: 1, backgroundColor: colors.background },
+  overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(31,20,24,0.4)" },
   safe: { flex: 1 },
   flex: { flex: 1, justifyContent: "center", paddingHorizontal: 24 },
-  logo: { fontSize: 34, color: colors.primary, fontFamily: fonts.headlineBold, textAlign: "center", marginBottom: 48 },
+  logo: {
+    fontSize: 42,
+    color: colors.primary,
+    fontFamily: fonts.headlineBold,
+    textAlign: "center",
+    marginBottom: 40,
+    letterSpacing: 4,
+    textShadowColor: "rgba(255, 77, 141, 0.85)",
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 14,
+  },
   form: { backgroundColor: colors.surfaceContainer, borderRadius: radius.xl, padding: 24 },
   title: { fontSize: 22, color: colors.onSurface, fontFamily: fonts.headline, marginBottom: 20 },
   input: {

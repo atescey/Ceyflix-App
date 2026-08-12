@@ -16,7 +16,9 @@ import { SkeletonMovieCard } from "../../components/SkeletonCard";
 import { colors, fonts, radius } from "../../constants/theme";
 
 const screenWidth = Dimensions.get("window").width;
-const cardWidth = (screenWidth - 16 * 2 - 12 * 2) / 3;
+const PADDING = 16;
+const GAP = 8;
+const cardWidth = Math.floor((screenWidth - PADDING * 2 - GAP * 2) / 3);
 
 export default function SearchScreen() {
   const [query, setQuery] = useState("");
@@ -76,8 +78,8 @@ export default function SearchScreen() {
 
       {loading ? (
         <View style={styles.skeletonGrid}>
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <SkeletonMovieCard key={i} width={cardWidth} />
+          {Array.from({ length: 9 }, (_, i) => i + 1).map((i) => (
+            <SkeletonMovieCard key={i} width={cardWidth} style={{ marginRight: 0 }} />
           ))}
         </View>
       ) : (
@@ -88,7 +90,7 @@ export default function SearchScreen() {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <View style={styles.gridItem}>
-              <MovieCard item={item} width={cardWidth} />
+              <MovieCard item={item} width={cardWidth} style={{ marginRight: 0 }} />
             </View>
           )}
           columnWrapperStyle={styles.row}
@@ -133,7 +135,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   list: { paddingBottom: 24 },
-  row: { paddingHorizontal: 16, justifyContent: "flex-start" },
+  row: { paddingHorizontal: 16, gap: 8 },
   gridItem: { marginBottom: 12 },
   emptyText: {
     textAlign: "center",

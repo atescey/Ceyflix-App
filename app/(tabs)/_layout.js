@@ -45,7 +45,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="watchlist"
         options={{
-          title: "İzlenecekler",
+          title: "Listem",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="bookmark" size={size} color={color} />
           ),

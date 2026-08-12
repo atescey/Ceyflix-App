@@ -165,7 +165,6 @@ export default function HomeScreen() {
         <View style={styles.header}>
           <Text style={styles.logo}>CEYFLİX</Text>
           <View style={styles.headerIcons}>
-            <Ionicons name="search" size={22} color={colors.onSurface} style={{ marginRight: 16 }} />
             <TouchableOpacity onPress={() => router.push("/profiles")}>
               <Ionicons name="person-circle" size={26} color={colors.onSurface} />
             </TouchableOpacity>
@@ -249,7 +248,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
   },
-  logo: { fontSize: 20, color: colors.primary, fontFamily: fonts.headlineBold },
+  logo: {
+    fontSize: 24,
+    color: colors.primary,
+    fontFamily: fonts.headlineBold,
+    letterSpacing: 2,
+    textShadowColor: "rgba(255, 77, 141, 0.7)",
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 10,
+  },
   headerIcons: { flexDirection: "row", alignItems: "center" },
   section: { marginTop: 20, marginBottom: 8 },
   sectionTitle: {
