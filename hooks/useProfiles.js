@@ -16,15 +16,26 @@ export function useProfiles(email) {
         try {
             const raw = await AsyncStorage.getItem(profilesKey(email));
             let list = raw ? JSON.parse(raw) : [];
+
             if (list.length === 0) {
-                const defaultProfile = {
+                list.push({
                     id: Date.now().toString(),
                     name: email.split("@")[0],
                     color: AVATAR_COLORS[0],
-                };
-                list = [defaultProfile];
-                await AsyncStorage.setItem(profilesKey(email), JSON.stringify(list));
+                });
             }
+
+            const hasKid = list.some((p) => p.isKid);
+            if (!hasKid) {
+                list.push({
+                    id: (Date.now() + 1).toString(),
+                    name: "Çocuk",
+                    color: AVATAR_COLORS[1],
+                    isKid: true,
+                });
+            }
+
+            await AsyncStorage.setItem(profilesKey(email), JSON.stringify(list));
             setProfiles(list);
         } catch (err) {
             console.error("Profiller yüklenemedi:", err.message);

@@ -1,5 +1,14 @@
-import { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, Modal, TextInput } from "react-native";
+import { useState, useEffect } from "react";
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    StyleSheet,
+    FlatList,
+    Modal,
+    TextInput,
+    ImageBackground,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -7,7 +16,6 @@ import { getSession } from "../hooks/useAuth";
 import { useProfiles } from "../hooks/useProfiles";
 import { useActiveProfile } from "../hooks/useActiveProfile";
 import { colors, fonts, radius } from "../constants/theme";
-import { useEffect } from "react";
 
 export default function ProfilesScreen() {
     const router = useRouter();
@@ -49,35 +57,49 @@ export default function ProfilesScreen() {
     }
 
     return (
-        <SafeAreaView style={styles.safe}>
-            <Text style={styles.title}>Kim İzliyor?</Text>
+        <ImageBackground
+            source={require("../assets/images/cinema-background.png")}
+            style={styles.background}
+            imageStyle={{ opacity: 0.5 }}
+        >
+            <View style={styles.overlay} />
+            <SafeAreaView style={styles.safe}>
+                <View style={styles.content}>
+                    <Text style={styles.title}>Kim İzliyor?</Text>
 
-            <FlatList
-                data={[...profiles, { id: "add", isAdd: true }]}
-                numColumns={3}
-                keyExtractor={(item) => item.id}
-                contentContainerStyle={styles.grid}
-                columnWrapperStyle={styles.row}
-                renderItem={({ item }) =>
-                    item.isAdd ? (
-                        <TouchableOpacity style={styles.profileItem} onPress={() => setModalVisible(true)}>
-                            <View style={[styles.avatar, styles.addAvatar]}>
-                                <Ionicons name="add" size={32} color={colors.onSurfaceVariant} />
-                            </View>
-                            <Text style={styles.profileName}>Profil Ekle</Text>
-                        </TouchableOpacity>
-                    ) : (
-                        <TouchableOpacity style={styles.profileItem} onPress={() => handleSelect(item)}>
-                            <View style={[styles.avatar, { backgroundColor: item.color }]}>
-                                <Text style={styles.avatarLetter}>{item.name.charAt(0).toUpperCase()}</Text>
-                            </View>
-                            <Text style={styles.profileName} numberOfLines={1}>
-                                {item.name}
-                            </Text>
-                        </TouchableOpacity>
-                    )
-                }
-            />
+                    <FlatList
+                        data={[...profiles, { id: "add", isAdd: true }]}
+                        numColumns={3}
+                        keyExtractor={(item) => item.id}
+                        scrollEnabled={false}
+                        contentContainerStyle={styles.grid}
+                        columnWrapperStyle={styles.row}
+                        renderItem={({ item }) =>
+                            item.isAdd ? (
+                                <TouchableOpacity style={styles.profileItem} onPress={() => setModalVisible(true)}>
+                                    <View style={[styles.avatar, styles.addAvatar]}>
+                                        <Ionicons name="add" size={32} color={colors.onSurfaceVariant} />
+                                    </View>
+                                    <Text style={styles.profileName}>Profil Ekle</Text>
+                                </TouchableOpacity>
+                            ) : (
+                                <TouchableOpacity style={styles.profileItem} onPress={() => handleSelect(item)}>
+                                    <View style={[styles.avatar, { backgroundColor: item.color }]}>
+                                        {item.isKid ? (
+                                            <Ionicons name="happy" size={36} color={colors.onPrimary} />
+                                        ) : (
+                                            <Text style={styles.avatarLetter}>{item.name.charAt(0).toUpperCase()}</Text>
+                                        )}
+                                    </View>
+                                    <Text style={styles.profileName} numberOfLines={1}>
+                                        {item.name}
+                                    </Text>
+                                </TouchableOpacity>
+                            )
+                        }
+                    />
+                </View>
+            </SafeAreaView>
 
             <Modal visible={modalVisible} transparent animationType="fade">
                 <View style={styles.modalOverlay}>
@@ -102,13 +124,16 @@ export default function ProfilesScreen() {
                     </View>
                 </View>
             </Modal>
-        </SafeAreaView>
+        </ImageBackground>
     );
 }
 
 const styles = StyleSheet.create({
-    safe: { flex: 1, backgroundColor: colors.background, justifyContent: "center" },
+    background: { flex: 1, backgroundColor: colors.background },
+    overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(31,20,24,0.55)" },
+    safe: { flex: 1, justifyContent: "center" },
     centered: { flex: 1 },
+    content: { paddingHorizontal: 16 },
     title: {
         fontSize: 26,
         color: colors.onSurface,
@@ -116,7 +141,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
         marginBottom: 32,
     },
-    grid: { paddingHorizontal: 16 },
+    grid: { alignItems: "center", justifyContent: "center" },
     row: { justifyContent: "center", gap: 20 },
     profileItem: { alignItems: "center", marginBottom: 24, width: 90 },
     avatar: {
@@ -128,7 +153,7 @@ const styles = StyleSheet.create({
     },
     addAvatar: { backgroundColor: colors.surfaceVariant },
     avatarLetter: { fontSize: 30, color: colors.onPrimary, fontFamily: fonts.headlineBold },
-    profileName: { color: colors.onSurfaceVariant, fontFamily: fonts.body, fontSize: 13, marginTop: 8 },
+    profileName: { color: colors.onSurfaceVariant, fontFamily: fonts.body, fontSize: 13, marginTop: 8, textAlign: "center" },
     modalOverlay: { flex: 1, backgroundColor: "rgba(0,0,0,0.6)", justifyContent: "center", padding: 32 },
     modalBox: { backgroundColor: colors.surfaceContainerHigh, borderRadius: radius.lg, padding: 20 },
     modalTitle: { color: colors.onSurface, fontFamily: fonts.headline, fontSize: 18, marginBottom: 16 },
@@ -144,6 +169,11 @@ const styles = StyleSheet.create({
     modalButtons: { flexDirection: "row", justifyContent: "flex-end", gap: 16 },
     modalCancel: { paddingVertical: 8, paddingHorizontal: 12 },
     modalCancelText: { color: colors.onSurfaceVariant, fontFamily: fonts.label },
-    modalConfirm: { paddingVertical: 8, paddingHorizontal: 16, backgroundColor: colors.primary, borderRadius: radius.md },
+    modalConfirm: {
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        backgroundColor: colors.primary,
+        borderRadius: radius.md,
+    },
     modalConfirmText: { color: colors.onPrimary, fontFamily: fonts.label },
 });

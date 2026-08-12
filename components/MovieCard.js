@@ -5,7 +5,7 @@ import { colors, fonts, radius } from "../constants/theme";
 const POSTER_BASE_URL = "https://image.tmdb.org/t/p/w342";
 const BACKDROP_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
-export default function MovieCard({ item, variant = "poster", width }) {
+export default function MovieCard({ item, variant = "poster", width, style }) {
     const router = useRouter();
     const title = item.title || item.name;
     const isTV = item.media_type ? item.media_type === "tv" : !item.title && !!item.name;
@@ -20,7 +20,7 @@ export default function MovieCard({ item, variant = "poster", width }) {
 
     return (
         <TouchableOpacity
-            style={[styles.card, { width: cardWidth }]}
+            style={[styles.card, { width: cardWidth }, style]}
             onPress={() => router.push(isTV ? `/tv/${item.id}` : `/movie/${item.id}`)}
             activeOpacity={0.8}
         >
